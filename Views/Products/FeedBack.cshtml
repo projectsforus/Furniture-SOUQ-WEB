@@ -1,0 +1,36 @@
+﻿@using LAQY.Resources
+@{
+    ViewBag.Title = "FeedBack";
+}
+<div class="col-md-12 col-sm-12">
+    <div class="section-title">
+        <h1 class="heading bold">@General.FeedBack</h1>
+        <hr>
+    </div>
+</div>
+<div class="content" style="background-color: cadetblue;">
+    <div class="main">
+        <form action="" method="post" class="form-horizontal">
+            <h5>@General.TellUsMore</h5>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <textarea class="form-control" id="tear" cols="50" rows="5" required placeholder="@General.TellUsMore"></textarea>
+                </div>
+            </div>
+            <input class="btn btn-info" type="button" value="@General.SendFeedback" onclick="Feed()">
+        </form>
+    </div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        function Feed()
+        {
+            if ($("#tear").val() != "") {
+                toastr.success("@General.SendedSuccesful", "LAQY");
+                $("#tear").val('');
+            }
+        }
+    </script>
+}

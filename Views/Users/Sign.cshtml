@@ -1,0 +1,231 @@
+﻿@model LAQY.Models.User
+@using LAQY.Resources
+@using System.Globalization;
+@using System.Threading;
+@{
+    CultureInfo currentCulture = Thread.CurrentThread.CurrentUICulture;
+}
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Sign - LAQY</title>
+    <link rel="icon" href="~/Image/a696f0fe-05e0-4be9-bab5-f6b027d2bebe.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @{
+        if (General.dir == "rtl")
+        {
+            <link href="~/Content/bootstrap-arabic.min.css" rel="stylesheet" />
+        }
+        else
+        {
+            <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+        }
+    }
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
+</head>
+<body data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+    <!-- navigation section -->
+    <section class="navbar navbar-fixed-top custom-navbar" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon icon-bar"></span>
+                    <span class="icon icon-bar"></span>
+                    <span class="icon icon-bar"></span>
+                </button>
+                @Html.ActionLink(General.LAQY, "Index", "Products", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li>@Html.ActionLink(General.lang, "Lang", "Handler", new { user = "anan", lang = General.langtex }, new { @class = "smoothScroll" })</li>
+            </ul>
+            <form id="myFormLog" class="navbar-form navbar-right">
+                <div class="form-group">
+                    <input type="email" id="email" name="email" required class="form-control" placeholder="@General.Email">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" name="password" required class="form-control" placeholder="@General.Password">
+                </div>
+                <button type="button" id="LogBtn" class="btn btn-success">@General.Login <span class="glyphicon glyphicon-log-in"></span></button>
+            </form>
+
+        </div>
+    </section>
+    <!-- team section -->
+    <section id="team">
+        <div class="container">
+            <div class="col-md-12 col-sm-12">
+                <div class="section-title">
+                    <h1 class="heading bold">@General.Register</h1>
+                    <hr>
+                </div>
+            </div>
+            <div class="container text-center">
+                <form id="myFormReg" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-3"></div>
+                        <label class="col-sm-2 control-label bb">@General.Name <span class="glyphicon glyphicon-user"></span></label>
+                        <div class="col-sm-3">
+                            <input type="text" id="name" class="form-control" required name="name" placeholder="@General.Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-3"></div>
+                        <label class="col-sm-2 control-label bb">@General.Address <span class="glyphicon glyphicon-home"></span></label>
+                        <div class="col-sm-3">
+                            <input type="text" id="address" class="form-control" required name="address" placeholder="@General.Address">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-3"></div>
+                        <label class="col-sm-2 control-label bb">@General.Phone <span class="glyphicon glyphicon-phone"></span></label>
+                        <div class="col-sm-3">
+                            <input type="text" id="phone" class="form-control" required name="phone" placeholder="@General.Phone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-3"></div>
+                        <label class="col-sm-2 control-label bb">@General.Email <span class="glyphicon glyphicon-share"></span></label>
+                        <div class="col-sm-3">
+                            <input id="remail" type="email" class="form-control" required name="email" placeholder="@General.Email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-3"></div>
+                        <label class="col-sm-2 control-label bb">@General.Password</label>
+                        <div class="col-sm-3">
+                            <input id="rpassword" type="password" class="form-control" required name="password" placeholder="@General.Password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-5 col-sm-1">
+                            <button id="RegBtn" type="button" class="btn btn-info">@General.Register <span class="glyphicon glyphicon-registration-mark"></span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <hr />
+    <!-- footer section -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <p class="bb">Copyright &copy; Developers 2019</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/Scripts/jquery.js"></script>
+    @{
+        if (General.dir == "rtl")
+        {
+            <script src="~/Scripts/bootstrap-arabic.min.js"></script>
+        }
+        else
+        {
+            <script src="~/Scripts/bootstrap.min.js"></script>
+        }
+    }
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script type="text/javascript">
+        $("#RegBtn").click(function () {
+            if ($("#name").val() != "" && $("#address").val() != "" && $("#phone").val() != "" && $("#remail").val() != "" && $("#rpassword").val() !="")
+            {
+               $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CheckEmail")',
+                    data: {Email:$("#remail").val()},
+                    success: function (data) {
+                        if (data == "ok") {
+                            var user = {};
+                            user.name = $("#name").val();
+                            user.address = $("#address").val();
+                            user.phone = $("#phone").val();
+                            user.email = $("#remail").val();
+                            user.password = $("#rpassword").val();
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("Register")',
+                                data: JSON.stringify(user),
+                                contentType: "application/json",
+                                success: function (data) {
+                                    if (data == "ok") {
+                                        toastr.success("@General.RMsg", "LAQY");
+                                        $("#name").val('');
+                                        $("#address").val('');
+                                        $("#phone").val('');
+                                        $("#remail").val('');
+                                        $("#rpassword").val('');
+                                    }
+                                    else {
+                                        toastr.warning("@General.Error", "LAQY");
+                                    }
+                                },
+                                error: function () {
+                                    toastr.error("@General.Error", "LAQY");
+                                }
+                            });
+                        }
+                        else {
+                            toastr.warning("@General.EmailExist", "LAQY");
+                        }
+                    },
+                    error: function () {
+                        toastr.error("@General.Error", "LAQY");
+                    }
+                });
+            }
+            else
+            {
+                toastr.info("@General.FillInfo", "LAQY");
+            }
+
+        });
+
+        $("#LogBtn").click(function () {
+            if ($("#email").val() != '' && $("#password").val() != '')
+            {
+                var mai = $("#email").val();
+            var pas = $("#password").val();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Login")',
+                data: { "email": mai, "password": pas },
+                contentType: "application/json",
+                success: function (data) {
+                    if (data == "user") {
+                        window.location = '/Products/Index';
+                    }
+                    else if (data == "inpass") {
+                        toastr.warning("@General.InPassword", "LAQY");
+                    }
+                    else if (data == "admin") {
+                        window.location = "/AProduct/Index";
+                    }
+                    else {
+                        toastr.error("@General.PRFirst", "LAQY");
+                    }
+                },
+                error: function () {
+                    toastr.error("@General.Error", "LAQY");
+                }
+            });
+            }
+            else {
+                toastr.info("@General.FillInfo", "LAQY");
+            }
+
+        });
+
+    </script>
+</body>
+</html>

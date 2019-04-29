@@ -1,0 +1,32 @@
+﻿@model IEnumerable<LAQY.Models.Offer>
+@using LAQY.Resources
+@{
+    ViewBag.Title = "Offers";
+    Layout = "~/Views/Shared/_AMaster.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="section-title">
+            <h1 class="heading bold">@General.OurOffers</h1>
+            <hr>
+        </div>
+    </div>
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3 col-sm-6 wow fadeIn" data-wow-delay="0.9s">
+            <div class="team-wrapper">
+                <img src="@Url.Content(@item.img)" width="300" height="300" alt="@item.title">
+                <div class="team-des">
+                    <h5>@item.title</h5>
+                    <h5><del>@item.price</del> @General.SR</h5>
+                    <h5>@item.dis @General.SR</h5>
+                    <hr>
+                    <ul class="social-icon">
+                        <li><a title="@General.SDetails" href="#" class="cbtn glyphicon glyphicon-eye-open" onclick="@("window.location.href='" +Url.Action("DetailsO",new { id=item.id})+"'");"></a> | <a title="@General.Update" href="#" class="cbtn glyphicon glyphicon-edit" onclick="@("window.location.href='" +Url.Action("EditO",new { id=item.id})+"'");"></a> | <a title="@General.DeleteOffer" href="#" class="cbtn glyphicon glyphicon-trash" onclick="@("window.location.href='" +Url.Action("DeleteO",new { id=item.id})+"'");"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+</div>

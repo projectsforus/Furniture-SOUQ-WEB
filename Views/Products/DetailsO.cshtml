@@ -1,0 +1,31 @@
+﻿@model LAQY.Models.Offer
+@using LAQY.Resources
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="section-title">
+            <h1 class="heading bold">@General.OfferDetails</h1>
+            <hr>
+            <img height="500" width="600" src="@Url.Content(@Model.img)" alt="@Model.title">
+            <br />
+            <h4>@General.Title : @Model.title</h4>
+            <h4>@General.Details</h4>
+            <p>
+                @Model.details
+            </p>
+            <h4>@General.Price : <del>@Model.price</del> @General.SR</h4>
+            <h4>@General.Offer : @Model.dis @General.SR</h4>
+            <h4>@General.Date : @Model.date</h4>
+        </div>
+    </div>
+</div>
+<p>
+    @Html.ActionLink(General.BList, "IndexO")
+</p>
+
+
+
+

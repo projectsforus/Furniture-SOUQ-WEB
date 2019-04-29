@@ -1,0 +1,89 @@
+﻿@using LAQY.Resources
+@using System.Globalization;
+@using System.Threading;
+@{
+    CultureInfo currentCulture = Thread.CurrentThread.CurrentUICulture;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.Title - LAQY</title>
+    <link rel="icon" href="~/Image/a696f0fe-05e0-4be9-bab5-f6b027d2bebe.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    @{
+        if (General.dir == "rtl")
+        {
+            <link href="~/Content/bootstrap-arabic.min.css" rel="stylesheet" />
+        }
+        else
+        {
+            <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+        }
+    }
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
+</head>
+<body data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+    <!-- navigation section -->
+    <section class="navbar navbar-fixed-top custom-navbar" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon icon-bar"></span>
+                    <span class="icon icon-bar"></span>
+                    <span class="icon icon-bar"></span>
+                </button>
+                @Html.ActionLink(General.LAQY, "Index", "AProduct", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul dir="rtl" class="nav navbar-nav navbar-left">
+                    <li>@Html.ActionLink(General.Products, "Index", "AProduct", null, new { @class = "smoothScroll" })</li>
+                    <li>@Html.ActionLink(General.Offers, "IndexO", "AProduct", null, new { @class = "smoothScroll" })</li>
+                    <li>@Html.ActionLink(General.AProduct, "Create", "AProduct", null, new { @class = "smoothScroll" })</li>
+                    <li>@Html.ActionLink(General.AOffer, "CreateO", "AProduct", null, new { @class = "smoothScroll" })</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink(General.LogOut, "LogOut", "Users", null, new { @class = "smoothScroll" })</li>
+                    <li>@Html.ActionLink(General.lang, "Lang", "Handler", new { user = "admin", lang = General.langtex }, new { @class = "smoothScroll" })</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!-- team section -->
+    <section id="team">
+        <div class="container">
+            @RenderBody()
+        </div>
+    </section>
+    <hr />
+    <!-- footer section -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <p>Copyright &copy; Developers 2019</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/Scripts/jquery.js"></script>
+    @{
+        if (General.dir == "rtl")
+        {
+            <script src="~/Scripts/bootstrap-arabic.min.js"></script>
+        }
+        else
+        {
+            <script src="~/Scripts/bootstrap.min.js"></script>
+        }
+    }
+    <script src="~/Scripts/toastr.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+

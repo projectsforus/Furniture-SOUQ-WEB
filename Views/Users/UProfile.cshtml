@@ -1,0 +1,129 @@
+﻿@model LAQY.Models.User
+@using LAQY.Resources
+@{
+    ViewBag.Title = "Profile";
+}
+
+<div class="col-md-12 col-sm-12">
+    <div class="section-title">
+        <h1 class="heading bold">@General.EditPersonalInfo</h1>
+        <hr>
+    </div>
+</div>
+<div class="container bootstrap snippet text-center">
+    <div class="row">
+        <div class="col-sm-9" style="background-color: white;border:none">
+            <ul class="nav nav-tabs" style="background-color: white;">
+                <li class="active"><a data-toggle="tab" href="#home">@General.Profile</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="home">
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label class="col-sm-2 control-label">@General.Name <span class="glyphicon glyphicon-user"></span></label>
+                            <input type="text" id="name" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label class="col-sm-2 control-label">@General.Address <span class="glyphicon glyphicon-home"></span></label>
+                            <input type="text" id="address" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label class="col-sm-2 control-label">@General.Phone <span class="glyphicon glyphicon-phone"></span></label>
+                            <input type="text" id="phone" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label class="col-sm-2 control-label">@General.Email <span class="glyphicon glyphicon-share"></span></label>
+                            <input type="email" id="email" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label class="col-sm-2 control-label">@General.Password</label>
+                            <input type="password" id="password" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <br>
+                            <button onclick="UserEdit()" class="btn btn-warning">@General.Update <span class="glyphicon glyphicon-edit"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+              $(function () {
+            LoadData();
+        });
+        //Edit
+        function UserEdit() {
+            if ($("#name").val() != "" && $("#address").val() != "" && $("#phone").val() != "" && $("#email").val() != "" && $("#password").val() != "") {
+                var user = {};
+                user.id = '@Session["Uid"]';
+                user.name = $("#name").val();
+                user.address = $("#address").val();
+                user.phone = $("#phone").val();
+                user.email = $("#email").val();
+                user.password = $("#password").val();
+                $.ajax({
+                    type: 'Post',
+                    url: '@Url.Action("UProfile","Users")',
+                    data: JSON.stringify(user),
+                    contentType: "application/json",
+                    success: function (data) {
+                        if (data == "ok") {
+                            toastr.success("@General.InUpSu", "LAQY");
+                            LoadData();
+                        }
+                        else {
+                            toastr.error("@General.Error", "LAQY");
+                        }
+                    },
+                    error: function () {
+                        toastr.error("@General.Error", "LAQY");
+                    }
+                });
+            }
+            else
+            {
+                toastr.info("@General.FillInfo", "LAQY");
+            }
+        }
+
+        function LoadData() {
+            if ('@Session["Uid"]' != "") {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetProfile","Users")',
+                    contentType: "application/json",
+                    success: function (data) {
+                        $("#name").val(data.name);
+                        $("#address").val(data.address);
+                        $("#phone").val(data.phone);
+                        $("#email").val(data.email);
+                        $("#password").val(data.password);
+                    },
+                    error: function () {
+                        toastr.error("@General.Error", "LAQY");
+                    }
+                });
+            }
+            else {
+                window.location = "/Users/Sign";
+            }
+        }
+    </script>
+}
+
+

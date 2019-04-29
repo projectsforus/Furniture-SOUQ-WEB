@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Error";
+}
+@using LAQY.Resources
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="section-title">
+            <h1 class="heading bold">@General.Error</h1>
+            <hr>
+            @General.ErrorMsg <a href="#" class="cbtn glyphicon glyphicon-home" onclick="@("window.location.href='" + Url.Action("Index", "Products", null)+"'");"></a>
+        </div>
+    </div>
+</div>

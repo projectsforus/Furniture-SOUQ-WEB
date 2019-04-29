@@ -1,0 +1,213 @@
+﻿@{
+    ViewBag.Title = "Cart";
+}
+@using LAQY.Resources
+<div class="modal fade" id="CheckModel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">@General.CheckOut</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class='row'>
+                        <div class='col-md-4'>
+                            <div class='form-row'>
+                                <div class='col-xs-12 form-group'>
+                                    <label class='control-label'>@General.EnCarNa</label>
+                                    <input title="@General.Name" type="text" min="0" id="name" class="form-control" />
+                                </div>
+                            </div>
+                            <div class='form-row'>
+                                <div class='col-xs-12 form-group'>
+                                    <label class='control-label'>@General.EnCaNu</label>
+                                    <input title="@General.number" type="number" min="0" id="number" class="form-control" />
+                                </div>
+                            </div>
+                            <div class='form-row'>
+                                <div class='col-xs-4 form-group'>
+                                    <label class='control-label'>@General.Encvc</label>
+                                    <input title="CVC" type="number" min="0" id="cvc" class="form-control" />
+                                </div>
+                                <div class='col-xs-4 form-group'>
+                                    <label class='control-label'>@General.EDate</label>
+                                    <input title="@General.Emonth" type="number" min="1" max="12" id="expm" class="form-control" />
+                                </div>
+                                <div class='col-xs-4 form-group'>
+                                    <label class='control-label'> </label>
+                                    <input title="@General.Eyear" type="number" min="2019" id="expy" class="form-control" />
+                                </div>
+                            </div>
+                            <div class='form-row'>
+                                <div class='col-md-12'>
+                                    <div class='form-control'>
+                                        @General.Total:
+                                        <span class='amount'>
+                                            <label id="tot"></label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="CheckBtn">@General.CheckOut</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 col-sm-12">
+    <div class="section-title">
+        <h1 class="heading bold">@General.Cart</h1>
+        <hr>
+    </div>
+</div>
+<table id="MyTb" class="table table-bordered table-striped table-responsive table-hover">
+    <thead>
+        <tr>
+            <th style="text-align:center;">@General.no</th>
+            <th style="text-align:center;">@General.Title</th>
+            <th style="text-align:center;">@General.Price</th>
+            <th style="text-align:center;">@General.Quantity</th>
+            <th style="text-align:center;">@General.Date</th>
+            <th style="text-align:center;">@General.Total</th>
+            <th style="text-align:center;">@General.Actions</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<hr />
+<div class="text-center">
+    <div class="navbar-form">
+        <div class="row">
+            <div class="form-group col-lg-4">
+                @General.Total : <label class="form-control" id="TotalL"></label>
+            </div>
+            <div class="form-group col-lg-offset-2">
+                <input class='btn btn-success form-control' value='@General.CheckOut' onclick="CheckOut()" type='button'>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+              $(function () {
+            LoadData();
+        });
+        //Edit
+        function ProEdit(iid) {
+            var Q = $("#" + iid).val();
+            $.ajax({
+                type: 'Post',
+                url: '@Url.Action("EditCart","Users")',
+                data: JSON.stringify({ "id": iid, "qty": Q }),
+                contentType: "application/json",
+                success: function (data) {
+                    if (data == "ok") {
+                        toastr.info("@General.ProductEdited", "LAQY");
+                        LoadData();
+                    }
+                    else {
+                        toastr.error("@General.Error", "LAQY");
+                    }
+                },
+                error: function () {
+                    toastr.error("@General.Error", "LAQY");
+                }
+            });
+        }
+        //Delete
+        function ProDelete(iid) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("DeleteC","Users")',
+                data: JSON.stringify({ "id": iid }),
+                contentType: "application/json",
+                success: function (data) {
+                    if (data == "ok")
+                    {
+                        toastr.info("@General.ProductDeleted", "LAQY");
+                        LoadData();
+                    }
+                    else
+                    {
+                        toastr.error("@General.Error", "LAQY");
+                    }
+
+                },
+                error: function () {
+                    toastr.error("@General.Error", "LAQY");
+                }
+            });
+        }
+
+        function LoadData() {
+            $("#MyTb tbody tr").remove();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetAll","Users")',
+                contentType: "application/json",
+                success: function (data) {
+                    if (data != "no") {
+                        var t = 0;
+                        $.each(data, function (i, item) {
+                            var rows = "<tr>"
+                                + "<td style='text-align:center;'>" + (i + 1) + "</td>"
+                                + "<td style='text-align:center;'>" + item.title + "</td>"
+                                + "<td style='text-align:center;'>" + item.price + "</td>"
+                                + "<td style='text-align:center;'><div class='col-lg-offset-5 col-lg-3'><input type='number' id='" + item.id + "' class='form-control' value='" + item.qty + "' /></div></td>"
+                                + "<td style='text-align:center;'>" + item.date + "</td>"
+                                + "<td style='text-align:center;'>" + item.total + "</td>"
+                                + "<td style='text-align:center;'> <a href='#' class='btn btn-warning glyphicon glyphicon-edit' onclick='ProEdit(" + item.id + ")'></a> | <a href='#' class='btn btn-danger glyphicon glyphicon-trash' onclick='ProDelete(" + item.id + ")' ></a></td>"
+                                + "</tr>";
+                            $('#MyTb tbody').append(rows);
+                            t += item.total;
+                        });
+                        $("#TotalL").text(t);
+                    }
+                    else {
+                        window.location = "/Users/Sign";
+                    }
+                },
+                error: function () {
+                    toastr.error("@General.Error", "LAQY");
+                }
+            });
+        }
+
+        //Checkout
+        $("#CheckBtn").click(function () {
+            if ($("#name").val() != '' && $("#number").val() != '' && $("#cvc").val() != '' && $("#expm").val() != '' && $("#expy").val() != '')
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Delete")',
+                    success: function (data) {
+                        toastr.info("@General.chOuDS", "LAQY");
+                        LoadData();
+                    },
+                    error: function () {
+                        toastr.error("@General.Error", "LAQY");
+                    }
+                });
+            }
+            else {
+                toastr.error("@General.FillInfo", "LAQY");
+            }
+        });
+        function CheckOut() {
+            if ($("#TotalL").text() != '') {
+                $("#CheckModel").modal('show');
+                $("#tot").text($("#TotalL").text());
+            }
+            else {
+                toastr.info("@General.nsProduct", "LAQY");
+            }
+        }
+    </script>
+}
